@@ -1,0 +1,17 @@
+{
+    "name": "PalmBot",
+    "version": "0.0.1",
+    "description": "Affordable mini robot designed by ThePalmLabs",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "pbShield.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "tests.ts"
+    ],
+    "public": true
+}
