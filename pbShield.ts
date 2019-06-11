@@ -1,5 +1,5 @@
 
-//% weight=10 color=#bc0e0b icon="\uf288" block="PalmBot"
+//% weight=10 color=#bc0e0b icon="\uf288" block="pbShield"
 namespace pbShield{
     
     export enum pos{
@@ -48,15 +48,22 @@ namespace pbShield{
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
 
-        pins.digitalWritePin(DigitalPin.P5, direction)
         pins.digitalWritePin(DigitalPin.P6, direction)
+        pins.digitalWritePin(DigitalPin.P8, direction)
+        speed *= 4
         speed = speed > 245 ? 245:speed
         if (direction == Dir.FORWARD)
         {
-            speed = 255-speed
+            pins.analogWritePin(AnalogPin.P7, speed)
+            speed = 1020-speed
+            pins.analogWritePin(AnalogPin.P9, speed)
         }
-        pins.analogWritePin(AnalogPin.P2, speed)
-        pins.analogWritePin(AnalogPin.P4, speed)
+        else
+        {
+            pins.analogWritePin(AnalogPin.P9, speed)
+            speed = 1020-speed
+            pins.analogWritePin(AnalogPin.P7, speed)
+        }
     }
 
     
@@ -102,32 +109,32 @@ namespace pbShield{
     //% blockId=motor_MotorTurn block="Turn|%side"
     //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
     export function MotorTurn(side: pos): void {
-        pins.digitalWritePin(DigitalPin.P2, state.Off)
-        pins.digitalWritePin(DigitalPin.P4, state.Off)
-        pins.digitalWritePin(DigitalPin.P5, state.Off)
         pins.digitalWritePin(DigitalPin.P6, state.Off)
+        pins.digitalWritePin(DigitalPin.P7, state.Off)
+        pins.digitalWritePin(DigitalPin.P8, state.On)
+        pins.digitalWritePin(DigitalPin.P9, state.On)
     
         if (side == pos.LEFT)
         {
-            pins.analogWritePin(AnalogPin.P2, 255)
+            pins.analogWritePin(AnalogPin.P7, 1024)
         }
         else
         {
-            pins.analogWritePin(AnalogPin.P4, 255)
+            pins.analogWritePin(AnalogPin.P9, 0)
         }
 
         basic.pause(200)
-        pins.digitalWritePin(DigitalPin.P2, state.Off)
-        pins.digitalWritePin(DigitalPin.P4, state.Off)
+        pins.digitalWritePin(DigitalPin.P7, state.Off)
+        pins.digitalWritePin(DigitalPin.P9, state.On)
     }
     
     //% weight=10
     //% blockId=motor_stopMoving block="Stop Moving"
     export function stopMoving(): void {
-        pins.digitalWritePin(DigitalPin.P2, state.Off) 
-        pins.digitalWritePin(DigitalPin.P5, state.Off) 
-        pins.digitalWritePin(DigitalPin.P4, state.Off) 
         pins.digitalWritePin(DigitalPin.P6, state.Off) 
+        pins.digitalWritePin(DigitalPin.P7, state.Off) 
+        pins.digitalWritePin(DigitalPin.P8, state.On) 
+        pins.digitalWritePin(DigitalPin.P9, state.On) 
     }
     
     //% weight=20
