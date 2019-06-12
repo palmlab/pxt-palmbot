@@ -51,18 +51,21 @@ namespace pbShield{
         pins.digitalWritePin(DigitalPin.P6, direction)
         pins.digitalWritePin(DigitalPin.P8, direction)
         speed *= 4
-        speed = speed > 245 ? 245:speed
         if (direction == Dir.FORWARD)
         {
+            pins.analogWritePin(AnalogPin.P6, 1023)
+            pins.analogWritePin(AnalogPin.P9, 1023)
+            speed = 1023-speed
             pins.analogWritePin(AnalogPin.P7, speed)
-            speed = 1020-speed
-            pins.analogWritePin(AnalogPin.P9, speed)
+            pins.analogWritePin(AnalogPin.P8, speed)
         }
         else
         {
+            pins.analogWritePin(AnalogPin.P7, 1023)
+            pins.analogWritePin(AnalogPin.P8, 1023)
+            speed = 1023-speed
+            pins.analogWritePin(AnalogPin.P6, speed)
             pins.analogWritePin(AnalogPin.P9, speed)
-            speed = 1020-speed
-            pins.analogWritePin(AnalogPin.P7, speed)
         }
     }
 
@@ -73,31 +76,38 @@ namespace pbShield{
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function MotorSet(index: pos, speed: number): void {
        
+        stopMoving()
         if (index == pos.LEFT)
         {
             if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P5, state.Off)
-                pins.analogWritePin(AnalogPin.P2, speed)
+                pins.analogWritePin(AnalogPin.P6, 1023)
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P7, speed)
             }
             else
             {
-                pins.digitalWritePin(DigitalPin.P5, state.On)
-                speed = 255-speed
-                pins.analogWritePin(AnalogPin.P2, speed)
+                pins.analogWritePin(AnalogPin.P7, 1023)
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P6, speed)
             }
             
         }
         else
         {
             if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P6, state.Off)
-                pins.analogWritePin(AnalogPin.P4, 255)
+                pins.analogWritePin(AnalogPin.P9, 1023)
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P8, speed)
             }
             else
             {
-                pins.digitalWritePin(DigitalPin.P6, state.On)
-                speed = 255-speed
-                pins.analogWritePin(AnalogPin.P4, speed)
+                pins.analogWritePin(AnalogPin.P8, 1023)
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P9, speed)
             }
             
         }
@@ -116,16 +126,17 @@ namespace pbShield{
     
         if (side == pos.LEFT)
         {
-            pins.analogWritePin(AnalogPin.P7, 1024)
+            pins.analogWritePin(AnalogPin.P6, 1024)
+            pins.analogWritePin(AnalogPin.P7, 1)
         }
         else
         {
-            pins.analogWritePin(AnalogPin.P9, 0)
+            pins.analogWritePin(AnalogPin.P9, 1024)
+            pins.analogWritePin(AnalogPin.P8, 1)
         }
 
         basic.pause(200)
-        pins.digitalWritePin(DigitalPin.P7, state.Off)
-        pins.digitalWritePin(DigitalPin.P9, state.On)
+        stopMoving()
     }
     
     //% weight=10
