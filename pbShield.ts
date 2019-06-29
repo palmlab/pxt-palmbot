@@ -67,7 +67,7 @@ namespace pbShield{
     }
     
     //% weight=95
-    //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
+    //% blockId=pb_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:pbDIRECTION, speed: number): void {
@@ -98,7 +98,7 @@ namespace pbShield{
     //% blockId=pb_MotorSet block="Set|%index|motor's power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
-    export function pb_MotorSet(index: pbPOSTION, speed: number): void {
+    export function MotorSet(index: pbPOSTION, speed: number): void {
        
         StopMoving();
         if (index == pbPOSTION.LEFT)
@@ -112,7 +112,7 @@ namespace pbShield{
             else
             {
                 pins.analogWritePin(AnalogPin.P7, 1023);
-                speed *= 4;
+                speed *= -4;
                 speed = 1023-speed;
                 pins.analogWritePin(AnalogPin.P6, speed);
             }
@@ -129,7 +129,7 @@ namespace pbShield{
             else
             {
                 pins.analogWritePin(AnalogPin.P8, 1023)
-                speed *= 4;
+                speed *= -4;
                 speed = 1023-speed;
                 pins.analogWritePin(AnalogPin.P9, speed)
             }
